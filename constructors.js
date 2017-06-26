@@ -100,7 +100,6 @@ DamageSpell.prototype = Object.create(Spell.prototype);
     if (damage >= this.health) {
       this.health = 0;
       this.isAlive = false;
-      console.log("YoU dIeD hAhA");
     } else {
       this.health -= damage;
       return this.health;
@@ -116,7 +115,7 @@ DamageSpell.prototype = Object.create(Spell.prototype);
    * @return {boolean} success  Whether mana was successfully spent.
    */
 
-   this.spendMana = function(cost, success) {
+   this.spendMana = function(cost) {
     if(this.mana >= cost) {
       this.mana -= cost;
       success = true;
@@ -126,7 +125,6 @@ DamageSpell.prototype = Object.create(Spell.prototype);
       return success;
     }
   };
-}
   /**
    * @method invoke
    *
@@ -153,3 +151,23 @@ DamageSpell.prototype = Object.create(Spell.prototype);
    * @param  {Spellcaster} target         The spell target to be inflicted.
    * @return {boolean}                    Whether the spell was successfully cast.
    */
+
+   this.invoke = function(spell, target) {
+    if (!(spell instanceof Spell)) {
+      return false;
+    } else if (spell instanceof DamageSpell) {
+      target.inflictDamage(spell.damage);
+      return true;
+    }
+
+    };
+    //   (spell instanceof DamageSpell === true && target instanceof Spellcaster === true && this.spendMana(spell.cost) === true) {
+    //   target.inflictDamage(spell.damage);
+    //   this.spendMana(spell.cost);
+    //   return true;
+    // } else if (this.spendMana(spell.cost) === false) {
+    //   return false;
+    // } else if (!(spell instanceof DamageSpell) && target instanceof Spellcaster === true) {
+    //   return false;
+    // } else if
+}
