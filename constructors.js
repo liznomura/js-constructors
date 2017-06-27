@@ -1,3 +1,4 @@
+/* jshint esversion: 6*/
 /**
  * Creates a generic spell that can be cast.
  *
@@ -153,21 +154,26 @@ DamageSpell.prototype = Object.create(Spell.prototype);
    */
 
    this.invoke = function(spell, target) {
-    if (!(spell instanceof Spell)) {
+    if(spell instanceof Spell) {
+      if(spell instanceof DamageSpell) {
+        if(target instanceof Spellcaster) {
+          if(this.spendMana(spell.cost) === true) {
+            target.inflictDamage(spell.damage);
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else if (this.spendMana(spell.cost) === true){
+        this.spendMana(spell.cost);
+        return true;
+      } else {
+        return false;
+      }
+    } else {
       return false;
-    } else if (spell instanceof DamageSpell) {
-      target.inflictDamage(spell.damage);
-      return true;
     }
-
-    };
-    //   (spell instanceof DamageSpell === true && target instanceof Spellcaster === true && this.spendMana(spell.cost) === true) {
-    //   target.inflictDamage(spell.damage);
-    //   this.spendMana(spell.cost);
-    //   return true;
-    // } else if (this.spendMana(spell.cost) === false) {
-    //   return false;
-    // } else if (!(spell instanceof DamageSpell) && target instanceof Spellcaster === true) {
-    //   return false;
-    // } else if
+};
 }
